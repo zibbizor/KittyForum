@@ -1,13 +1,14 @@
 <?php
 require_once('../bootstrap.php');
+use Entity\Post;
 $pagename = "Threads";
-
+$keyword = "";
 
 //var_dump($posts);
 
-if (isset($_GET['action']) && isset($_GET['id']))
+if (isset($_GET['action']))
 {
-  if ($_GET['action'] == "delete")
+  if ($_GET['action'] == "delete" && isset($_GET['id']))
   {
     try
     {
@@ -23,8 +24,30 @@ if (isset($_GET['action']) && isset($_GET['id']))
       $_SESSION['error'] = "Could not delete the thread.";
       header('Location: threads.php');
     }
+  }
 
+  if ($_GET['action'] == "search" && isset($_GET['keyword']))
+  {
+    $keyword = htmlentities($_GET['keyword']);
 
+    $query = $em->createQueryBuilder();
+    $query
+        ->select('p')
+        ->from('Entity\Post', 'p')
+        ->where('p.subject LIKE :word')
+        ->setParameter('word', '%'.$keyword.'%')
+    ;
+
+    $posts = $query->getQuery()->getResult();
+
+    include '../src/Views/Header.php';
+    include '../src/Views/Threads.php';
+    include '../src/Views/Footer.php';
+  }
+  else
+  {
+    $_SESSION['error'] = "Invalid action";
+    header('Location: threads.php');
   }
 }
 else

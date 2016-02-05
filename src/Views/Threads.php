@@ -15,6 +15,15 @@
                         unset($_SESSION['error']);
                       }
                 ?>
+                <form method="get" action="<?=$_SERVER['PHP_SELF'];?>">
+                <div class="input-group">
+                  <input type="hidden" name="action" value="search">
+                  <input type="text" name="keyword" class="form-control" placeholder="Search for..." value="<?= $keyword ?>">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit">Go!</button>
+                  </span>
+                </div>
+                </form>
                 <table class="table table-striped table-hover">
                   <thead>
                     <tr>
