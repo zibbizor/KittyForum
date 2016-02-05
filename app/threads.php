@@ -35,6 +35,7 @@ if (isset($_GET['action']))
         ->select('p')
         ->from('Entity\Post', 'p')
         ->where('p.subject LIKE :word')
+        ->orderBy('p.date', 'DESC')
         ->setParameter('word', '%'.$keyword.'%')
     ;
 
@@ -52,7 +53,14 @@ if (isset($_GET['action']))
 }
 else
 {
-  $posts = $em->getRepository('Entity\Post')->findAll();
+  $query = $em->createQueryBuilder();
+  $query
+      ->select('p')
+      ->from('Entity\Post', 'p')
+      ->orderBy('p.date', 'DESC')
+  ;
+
+  $posts = $query->getQuery()->getResult();
 
   include '../src/Views/Header.php';
   include '../src/Views/Threads.php';
