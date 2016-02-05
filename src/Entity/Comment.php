@@ -17,6 +17,11 @@ class Comment
     private $post;
     /** @Column(type="datetime") */
     private $date;
+    /**
+     * @ManyToOne(targetEntity="User", inversedBy="comments")
+     * @JoinColumn(name="author_id", referencedColumnName="id")
+     */
+    private $author;
 
     /**
      * Get id
@@ -108,5 +113,29 @@ class Comment
     public function getPost()
     {
         return $this->post;
+    }
+
+    /**
+     * Set author
+     *
+     * @param \Entity\User $author
+     *
+     * @return Comment
+     */
+    public function setAuthor(\Entity\User $author = null)
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * Get author
+     *
+     * @return \Entity\User
+     */
+    public function getAuthor()
+    {
+        return $this->author;
     }
 }

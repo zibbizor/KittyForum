@@ -1,5 +1,5 @@
 <?php
-require_once('../bootstrap.php');
+require_once('before.php');
 use Entity\Comment;
 use Entity\Post;
 $pagename = "Processing";
@@ -15,6 +15,16 @@ if (!empty($_POST))
     $comment->setMessage($_POST['comment_message']);
     $comment->setPost($post);
     $comment->setDate(new DateTime());
+
+    if ($userLoggedIn)
+    {
+      $comment->setAuthor($user);
+    }
+    else
+    {
+      $anon = $em->getRepository('Entity\User')->find(1);
+      $comment->setAuthor($anon);
+    }
 
     $em->persist($comment);
     $em->flush();

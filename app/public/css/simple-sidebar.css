@@ -96,6 +96,14 @@
     background: none;
 }
 
+.sidebar-userinfo {
+    color: #999999;
+}
+
+.sidebar-userinfo #name {
+    color: #00a3ff;
+}
+
 @media(min-width:768px) {
     #wrapper {
         padding-left: 250px;

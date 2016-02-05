@@ -15,6 +15,14 @@
                         include 'ErrorNotification.php';
                         unset($_SESSION['error']);
                       }
+
+                      if (!$userLoggedIn)
+                      {
+                        echo '<div class="alert alert-danger">
+                          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                          <strong>Attention!</strong> You are not logged in and will post as anonymous.
+                        </div>';
+                      }
                        ?>
                         <form class="form-horizontal" method="post" action="<?=$_SERVER['PHP_SELF'];?>">
                         <div class="form-group">

@@ -1,9 +1,10 @@
 <?php
-require_once('../bootstrap.php');
+require_once('before.php');
 
 $pagename = "New Thread";
 use Entity\Post;
 
+$post = new Post;
 $postname = "";
 $postmessage = "";
 
@@ -11,9 +12,17 @@ if (isset($_GET['action']) && isset($_GET['id']))
 {
   if ($_GET['action'] == "edit")
   {
-    $post = $em->getRepository('Entity\Post')->find($_GET['id']);
-    $postname = $post->getSubject();
-    $postmessage = $post->getMessage();
+    if ($userLoggedIn)
+    {
+      $post = $em->getRepository('Entity\Post')->find($_GET['id']);
+      $postname = $post->getSubject();
+      $postmessage = $post->getMessage();
+    }
+    else
+    {
+      $_SESSION['error'] = "You are not allowed to edit posts as anonymous.";
+      header('Location: threads.php');
+    }
 
     //var_dump($postname);
     //var_dump($postmessage);
@@ -23,6 +32,8 @@ else if (isset($_POST['ThreadName']) && isset($_POST['ThreadContent']) && isset(
 {
   if ($_POST['action'] == 'editthread')
   {
+    if ($userLoggedIn)
+    {
     $post = $em->getRepository('Entity\Post')->find($_POST['ThreadID']);
     $post->setSubject(htmlentities($_POST['ThreadName']));
     $post->setMessage(htmlentities($_POST['ThreadContent']));
@@ -31,15 +42,29 @@ else if (isset($_POST['ThreadName']) && isset($_POST['ThreadContent']) && isset(
     $em->flush();
 
     $_SESSION['success'] = "Thread has been successfully edited.";
+    }
+    else
+    {
+
+    }
   }
   else if ($_POST['action'] == 'newthread')
   {
     if (!empty($_POST['ThreadName']) && !empty($_POST['ThreadContent']))
     {
-      $post = new Post;
       $post->setSubject(htmlentities($_POST['ThreadName']));
       $post->setDate(new DateTime());
       $post->setMessage(htmlentities($_POST['ThreadContent']));
+
+      if ($userLoggedIn)
+      {
+        $post->setAuthor($user);
+      }
+      else
+      {
+        $anon = $em->getRepository('Entity\User')->find(1);
+        $post->setAuthor($anon);
+      }
 
       $em->persist($post);
       $em->flush();

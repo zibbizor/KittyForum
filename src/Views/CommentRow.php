@@ -1,6 +1,6 @@
 <tr>
   <tr>
-    Message #<?= $comment->getId() ?>, Posted By %NAME% on <?= $comment->getDateString() ?>
+    Message #<?= $comment->getId() ?>, Posted by <?= $comment->getAuthor()->getFirstname() ?> on <?= $comment->getDateString() ?>
     <br>
     <?= $comment->getMessage(); ?>
   </tr>

@@ -1,5 +1,5 @@
 <?php
-require_once('../bootstrap.php');
+require_once('before.php');
 use Entity\Post;
 $pagename = "Threads";
 $keyword = "";

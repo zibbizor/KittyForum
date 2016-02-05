@@ -14,7 +14,8 @@
                       unset($_SESSION['error']);
                     }
                     ?>
-                <h1><?= $post->getSubject(); ?></h1>
+                <?= '<h2>' . $post->getSubject() . '</h2><h4>by ' . $post->getAuthor()->getFirstname() . '</h4>' ?>
+                <br>
                 <p>
                   <?= $post->getMessage(); ?>
                 </p>

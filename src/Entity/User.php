@@ -20,6 +20,14 @@ class User
     private $lastname;
     /** @Column(type="datetime") */
     private $birthDate;
+    /**
+     * @OneToMany(targetEntity="Entity\Post", mappedBy="author", cascade={"persist", "remove"})
+     */
+    private $posts;
+    /**
+     * @OneToMany(targetEntity="Entity\Comment", mappedBy="author", cascade={"persist", "remove"})
+     */
+    private $comments;
 
     /**
      * Get id
@@ -173,5 +181,81 @@ class User
     public function getBirthDate()
     {
         return $this->birthDate;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->posts = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add post
+     *
+     * @param \Entity\Post $post
+     *
+     * @return User
+     */
+    public function addPost(\Entity\Post $post)
+    {
+        $this->posts[] = $post;
+
+        return $this;
+    }
+
+    /**
+     * Remove post
+     *
+     * @param \Entity\Post $post
+     */
+    public function removePost(\Entity\Post $post)
+    {
+        $this->posts->removeElement($post);
+    }
+
+    /**
+     * Get posts
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPosts()
+    {
+        return $this->posts;
+    }
+
+    /**
+     * Add comment
+     *
+     * @param \Entity\Comment $comment
+     *
+     * @return User
+     */
+    public function addComment(\Entity\Comment $comment)
+    {
+        $this->comments[] = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Remove comment
+     *
+     * @param \Entity\Comment $comment
+     */
+    public function removeComment(\Entity\Comment $comment)
+    {
+        $this->comments->removeElement($comment);
+    }
+
+    /**
+     * Get comments
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getComments()
+    {
+        return $this->comments;
     }
 }

@@ -1,5 +1,5 @@
 <?php
-require_once('../bootstrap.php');
+require_once('before.php');
 
 if (!isset($_GET) || empty($_GET['id']))
 {

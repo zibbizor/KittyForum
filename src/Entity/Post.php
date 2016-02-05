@@ -21,6 +21,11 @@ class Post
      * @OneToMany(targetEntity="Entity\Comment", mappedBy="post", cascade={"persist", "remove"})
      */
     private $comments;
+    /**
+     * @ManyToOne(targetEntity="User", inversedBy="posts")
+     * @JoinColumn(name="author_id", referencedColumnName="id")
+     */
+    private $author;
 
     /**
      * Get id
@@ -153,5 +158,29 @@ class Post
     public function getComments()
     {
         return $this->comments;
+    }
+
+    /**
+     * Set author
+     *
+     * @param \Entity\User $author
+     *
+     * @return Post
+     */
+    public function setAuthor(\Entity\User $author = null)
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * Get author
+     *
+     * @return \Entity\User
+     */
+    public function getAuthor()
+    {
+        return $this->author;
     }
 }
