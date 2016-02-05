@@ -1,6 +1,9 @@
 <?php
 namespace Entity;
-/** @Entity */
+/**
+ * @Entity(repositoryClass="Repository\PostRepository")
+ * @Table(name="post")
+ */
 class Post
 {
     /**

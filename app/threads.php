@@ -29,17 +29,18 @@ if (isset($_GET['action']))
   if ($_GET['action'] == "search" && isset($_GET['keyword']))
   {
     $keyword = htmlentities($_GET['keyword']);
+    $posts = $em->getRepository('Entity\Post')->searchSubject($keyword);
 
-    $query = $em->createQueryBuilder();
-    $query
-        ->select('p')
-        ->from('Entity\Post', 'p')
-        ->where('p.subject LIKE :word')
-        ->orderBy('p.date', 'DESC')
-        ->setParameter('word', '%'.$keyword.'%')
-    ;
-
-    $posts = $query->getQuery()->getResult();
+    // $query = $em->createQueryBuilder();
+    // $query
+    //     ->select('p')
+    //     ->from('Entity\Post', 'p')
+    //     ->where('p.subject LIKE :word')
+    //     ->orderBy('p.date', 'DESC')
+    //     ->setParameter('word', '%'.$keyword.'%')
+    // ;
+    //
+    // $posts = $query->getQuery()->getResult();
 
     include '../src/Views/Header.php';
     include '../src/Views/Threads.php';
@@ -53,14 +54,15 @@ if (isset($_GET['action']))
 }
 else
 {
-  $query = $em->createQueryBuilder();
-  $query
-      ->select('p')
-      ->from('Entity\Post', 'p')
-      ->orderBy('p.date', 'DESC')
-  ;
+  $posts = $em->getRepository('Entity\Post')->findBy(array(), array('date' => 'DESC'));
+  // $query = $em->createQueryBuilder();
+  // $query
+  //     ->select('p')
+  //     ->from('Entity\Post', 'p')
+  //     ->orderBy('p.date', 'DESC')
+  // ;
 
-  $posts = $query->getQuery()->getResult();
+  //$posts = $query->getQuery()->getResult();
 
   include '../src/Views/Header.php';
   include '../src/Views/Threads.php';
