@@ -3,30 +3,55 @@ require_once('../bootstrap.php');
 
 $pagename = "New Thread";
 use Entity\Post;
-$post = new Post;
 
-if (isset($_POST) && isset($_POST['ThreadName']) && isset($_POST['ThreadContent']))
+$postname = "";
+$postmessage = "";
+
+if (isset($_GET['action']) && isset($_GET['id']))
 {
-  //var_dump($_POST);
-
-  if (!empty($_POST['ThreadName']) && !empty($_POST['ThreadContent']))
+  if ($_GET['action'] == "edit")
   {
+    $post = $em->getRepository('Entity\Post')->find($_GET['id']);
+    $postname = $post->getSubject();
+    $postmessage = $post->getMessage();
+
+    //var_dump($postname);
+    //var_dump($postmessage);
+  }
+}
+else if (isset($_POST['ThreadName']) && isset($_POST['ThreadContent']) && isset($_POST['action']))
+{
+  if ($_POST['action'] == 'editthread')
+  {
+    $post = $em->getRepository('Entity\Post')->find($_POST['ThreadID']);
     $post->setSubject(htmlentities($_POST['ThreadName']));
-    $post->setDate(new DateTime());
     $post->setMessage(htmlentities($_POST['ThreadContent']));
 
     $em->persist($post);
     $em->flush();
 
-    //var_dump($post);
-    $_SESSION['success'] = "Thread has been successfully created.";
+    $_SESSION['success'] = "Thread has been successfully edited.";
   }
-  else
+  else if ($_POST['action'] == 'newthread')
   {
-    $_SESSION['error'] = "Failed to create thread.";
+    if (!empty($_POST['ThreadName']) && !empty($_POST['ThreadContent']))
+    {
+      $post = new Post;
+      $post->setSubject(htmlentities($_POST['ThreadName']));
+      $post->setDate(new DateTime());
+      $post->setMessage(htmlentities($_POST['ThreadContent']));
+
+      $em->persist($post);
+      $em->flush();
+
+      //var_dump($post);
+      $_SESSION['success'] = "Thread has been successfully created.";
+    }
+    else
+    {
+      $_SESSION['error'] = "Failed to create thread.";
+    }
   }
-
-
 }
 
 
