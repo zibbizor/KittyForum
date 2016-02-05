@@ -1,0 +1,17 @@
+{
+    "name": "kitty/doctrine",
+    "description": "Kitty doctrine",
+    "require": {
+        "doctrine/orm": "^2.5",
+        "symfony/yaml": "^3.0"
+    },
+    "autoload": {
+        "psr-4": { "": "src/"}
+    },
+    "authors": [
+        {
+            "name": "IWBTG",
+            "email": "empty@github.io"
+        }
+    ]
+}

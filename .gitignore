@@ -38,3 +38,9 @@
 
 # Composer PHAR
 /composer.phar
+
+#ignore vendors
+/vendor
+src/Entity/Comment.php~
+src/Entity/Post.php~
+src/Entity/User.php~
