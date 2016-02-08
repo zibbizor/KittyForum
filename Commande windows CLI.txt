@@ -1,0 +1,6 @@
+php vendor/doctrine/orm/bin/doctrine orm:schema-tool:create
+OU
+"vendor/bin/doctrine.bat" orm:schema-tool:create
+
+
+"vendor/bin/doctrine.bat" orm:generate:entities src

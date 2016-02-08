@@ -30,6 +30,30 @@
                           </div>
                         </div>
                         <div class="form-group">
+                          <label for="inputUserDescription" class="col-sm-2 control-label">Description</label>
+                          <div class="col-sm-10">
+                            <input type="text" class="form-control" name="UserDescription" id="inputUserDescription" placeholder="Say something about you..." value="<?= $userdescription ?>">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="inputUserFirstname" class="col-sm-2 control-label">First Name</label>
+                          <div class="col-sm-10">
+                            <input type="text" class="form-control" name="UserFirstname" id="inputUserFirstname" placeholder="First Name" value="<?= $userfirstname ?>">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="inputUserLastname" class="col-sm-2 control-label">Last Name</label>
+                          <div class="col-sm-10">
+                            <input type="text" class="form-control" name="UserLastname" id="inputUserLastname" placeholder="Last name" value="<?= $userlastname ?>">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="inputUserDate" class="col-sm-2 control-label">Date of Birth</label>
+                          <div class="col-sm-10">
+                            <input type="date" class="form-control" name="UserDate" id="inputUserDate">
+                          </div>
+                        </div>
+                        <div class="form-group">
                           <div class="col-sm-offset-2 col-sm-10">
                             <button type="submit" class="btn btn-info">Register</button>
                           </div>

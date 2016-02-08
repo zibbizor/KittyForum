@@ -1,18 +1,33 @@
 <?php
 require_once('before.php');
-
-$pagename = "Registration";
 use Entity\User;
+$pagename = "Registration";
 
-$user = new User;
 $useremail = "";
 $userpassword = "";
+$userdescription = "";
+$userfirstname = "";
+$userlastname = "";
+$userdate = "";
 
-if (isset($_POST['UserEmail']) && isset($_POST['UserPassword']))
+if (isset($_POST['UserEmail']) && isset($_POST['UserPassword']) && isset($_POST['UserDescription']) && isset($_POST['UserFirstname']) && isset($_POST['UserLastname']) && isset($_POST['UserDate']))
 {
     if (!$userLoggedIn)
     {
     //add user registration and handle errors
+    $newuser = new User;
+
+    $newuser->setEmail(htmlentities($_POST['UserEmail']));
+    $newuser->setPassword(htmlentities($_POST['UserPassword']));
+    $newuser->setDescription(htmlentities($_POST['UserDescription']));
+    $newuser->setFirstname(htmlentities($_POST['UserFirstname']));
+    $newuser->setLastname(htmlentities($_POST['UserLastname']));
+
+    $date = DateTime::createFromFormat('Y-m-d', $_POST['UserDate']);
+    $newuser->setBirthDate($date);
+    $em->persist($newuser);
+    $em->flush($newuser);
+
 
     $_SESSION['success'] = "You have been registered";
     header('Location: threads.php');
