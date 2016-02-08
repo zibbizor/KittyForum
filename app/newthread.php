@@ -92,7 +92,7 @@ else {
 }
 
 
-if ($display === true)
+if ($display)
 {
   include '../src/Views/Header.php';
   include '../src/Views/NewThread.php';

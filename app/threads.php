@@ -3,6 +3,7 @@ require_once('before.php');
 use Entity\Post;
 $pagename = "Threads";
 $keyword = "";
+$display = false;
 
 //var_dump($posts);
 
@@ -10,23 +11,30 @@ if (isset($_GET['action']))
 {
   if ($_GET['action'] == "delete" && isset($_GET['id']))
   {
-    try
+    if ($userLoggedIn)
     {
-      $post = $em->find('Entity\Post', intval($_GET['id']));
-      $em->remove($post);
-      $em->flush();
+      try
+      {
+        $post = $em->find('Entity\Post', intval($_GET['id']));
+        $em->remove($post);
+        $em->flush();
 
-      $_SESSION['success'] = "Thread has been successfully deleted.";
-      header('Location: threads.php');
-    } catch (Exception $e)
+        $_SESSION['success'] = "Thread has been successfully deleted.";
+        header('Location: threads.php');
+      } catch (Exception $e)
+      {
+
+        $_SESSION['error'] = "Could not delete the thread.";
+        header('Location: threads.php');
+      }
+    }
+    else
     {
-
-      $_SESSION['error'] = "Could not delete the thread.";
+      $_SESSION['error'] = "You are not allowed to delete posts as anonymous.";
       header('Location: threads.php');
     }
   }
-
-  if ($_GET['action'] == "search" && isset($_GET['keyword']))
+  else if ($_GET['action'] == "search" && isset($_GET['keyword']))
   {
     $keyword = htmlentities($_GET['keyword']);
     $posts = $em->getRepository('Entity\Post')->searchSubject($keyword);
@@ -42,9 +50,7 @@ if (isset($_GET['action']))
     //
     // $posts = $query->getQuery()->getResult();
 
-    include '../src/Views/Header.php';
-    include '../src/Views/Threads.php';
-    include '../src/Views/Footer.php';
+    $display = true;
   }
   else
   {
@@ -64,10 +70,13 @@ else
 
   //$posts = $query->getQuery()->getResult();
 
+  $display = true;
+}
+
+if ($display)
+{
   include '../src/Views/Header.php';
   include '../src/Views/Threads.php';
   include '../src/Views/Footer.php';
 }
-
-
  ?>
