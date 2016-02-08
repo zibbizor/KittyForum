@@ -4,17 +4,14 @@ require_once('before.php');
 $pagename = "Login";
 use Entity\User;
 
-$user = new User;
-$useremail = "";
-$userpassword = "";
-
 if (isset($_GET['action']))
 {
   if ($_GET['action'] == "logout")
   {
     if ($userLoggedIn)
     {
-      unset($_SESSION['user']);
+      unset($_SESSION['uid']);
+      $_SESSION['success'] = "You have been logged out.";
       header('Location: threads.php');
     }
     else
@@ -28,10 +25,25 @@ else if (isset($_POST['UserEmail']) && isset($_POST['UserPassword']))
 {
     if (!$userLoggedIn)
     {
-    //add user login handling
+      //add user login handling
+      $usertest = $em->getRepository('Entity\User')->findOneBy(array('email' => $_POST['UserEmail']));
 
-    $_SESSION['success'] = "You have been logged in.";
-    header('Location: threads.php');
+      if ($usertest === null)
+      {
+        $_SESSION['error'] = "Invalid Username";
+        header('Location: login.php');
+      }
+      else if ($usertest->getPassword() != $_POST['UserPassword'])
+      {
+        $_SESSION['error'] = "Invalid Password";
+        header('Location: login.php');
+      }
+      else
+      {
+        $_SESSION['uid'] = $usertest->getId();
+        $_SESSION['success'] = "You have been logged in.";
+        header('Location: threads.php');
+      }
     }
     else
     {
