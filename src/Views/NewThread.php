@@ -3,7 +3,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
-                <h1>New Thread</h1>
+                <h1><?= $pagename ?></h1>
                 <br>
                 <?php if(isset($_SESSION['success']))
                       {
@@ -50,7 +50,7 @@
                         </div>
                         <div class="form-group">
                           <div class="col-sm-offset-2 col-sm-10">
-                            <button type="submit" class="btn btn-info">Post Thread</button>
+                            <button type="submit" class="btn btn-info"><?= $op ?></button>
                           </div>
                         </div>
                         </form>

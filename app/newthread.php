@@ -2,11 +2,13 @@
 require_once('before.php');
 
 $pagename = "New Thread";
+$op = "Post Thread";
 use Entity\Post;
 
 $post = new Post;
 $postname = "";
 $postmessage = "";
+$display = false;
 
 if (isset($_GET['action']) && isset($_GET['id']))
 {
@@ -17,6 +19,9 @@ if (isset($_GET['action']) && isset($_GET['id']))
       $post = $em->getRepository('Entity\Post')->find($_GET['id']);
       $postname = $post->getSubject();
       $postmessage = $post->getMessage();
+      $display = true;
+      $pagename = "Edit Thread";
+      $op = "Edit Thread";
     }
     else
     {
@@ -42,10 +47,12 @@ else if (isset($_POST['ThreadName']) && isset($_POST['ThreadContent']) && isset(
     $em->flush();
 
     $_SESSION['success'] = "Thread has been successfully edited.";
+    header('Location: threads.php');
     }
     else
     {
-
+        $_SESSION['error'] = "You are not allowed to edit posts as anonymous.";
+        header('Location: threads.php');
     }
   }
   else if ($_POST['action'] == 'newthread')
@@ -71,18 +78,25 @@ else if (isset($_POST['ThreadName']) && isset($_POST['ThreadContent']) && isset(
 
       //var_dump($post);
       $_SESSION['success'] = "Thread has been successfully created.";
+      header('Location: threads.php');
     }
     else
     {
       $_SESSION['error'] = "Failed to create thread.";
+      $display = true;
     }
   }
 }
+else {
+  $display = true;
+}
 
 
-
-include '../src/Views/Header.php';
-include '../src/Views/NewThread.php';
-include '../src/Views/Footer.php';
+if ($display === true)
+{
+  include '../src/Views/Header.php';
+  include '../src/Views/NewThread.php';
+  include '../src/Views/Footer.php';
+}
 
  ?>
